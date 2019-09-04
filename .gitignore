@@ -1,3 +1,4 @@
 /yelp_dataset/*
 .git
+.gitattributes
 .DS_Store
