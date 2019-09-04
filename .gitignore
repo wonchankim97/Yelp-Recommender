@@ -1,4 +1,5 @@
 /yelp_dataset/*
 .git
 .gitattributes
+.ipynb_checkpoints/*
 .DS_Store
