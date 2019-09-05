@@ -1,5 +1,5 @@
 /yelp_dataset/*
-/sample_dataset/*
+#/sample_dataset/*
 .git
 .gitattributes
 .ipynb_checkpoints/*
