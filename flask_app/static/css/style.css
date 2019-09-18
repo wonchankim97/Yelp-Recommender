@@ -31,15 +31,6 @@ body{
     text-decoration: none;
 }
 
-/* .button{
-	background-color:rgb(112, 106, 106);
-	color:#fff;
-	padding:10px 15px;
-    border:0.5px rgb(112, 106, 106) solid;
-    border-radius:15px;
-    font: inherit;
-} */
-
 #id_submit:hover{
 	background:rgb(214, 197, 99);
 	color:#333;
@@ -80,13 +71,6 @@ body{
 	font-size:16px;
 	padding-right:15px;
 }
-
-/* #map, #sidebar {
-    display:inline-block;
-    vertical-align: top;
-    border: 1px dotted blue;
-    word-wrap: break-word;
-  } */
 
 #map{
     display:inline-block;
@@ -132,7 +116,7 @@ select{
 	box-sizing: border-box;
 }
 
-#categories{
+#information{
     float:right;
     width: 30%;
 	color:#fff;
