@@ -10,9 +10,9 @@ import plaidml.keras
 plaidml.keras.install_backend()
 os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
-# import xlearn as xl
-# import tensorflow.keras as keras
-# from tensorflow.keras.models import load_model
+import xlearn as xl
+import tensorflow.keras as keras
+from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
 
 ### Load ##################
