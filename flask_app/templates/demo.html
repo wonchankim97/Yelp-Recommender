@@ -1,0 +1,61 @@
+{% extends 'layout.html'%}
+{% block rank %}
+    {{super()}}
+    <h1>Restaurant Rankings</h1>
+    <p>
+        Get yo fried chicken here
+    </p>
+{% endblock rank %}
+
+{% block recommend %}
+    {{super()}}
+    <div id="wrapper">
+            <section id="map">
+                <h1>The map will go here</h1>
+            </section>
+            <aside id="sidebar">
+                <p>
+                    
+                </p>
+                <select id="formControlSelect1">
+                    <option>Felicia (User ID: 2lsflkj23)</option>
+                    <option>Example one</option>
+                    <option>Example one</option>
+                    <option>Example one</option>
+                    <option>Example one</option>
+                    <option>Example one</option>
+                    <option>Example one</option>
+                </select>
+                
+                <a href="/demo/predict" class="button" type="button">
+                    Get Recommendations
+                </a>
+                <!-- <button type="button" class="button" href="/predicth">
+                    Get Recommendations
+                </button> -->
+            </aside>
+        </div>
+{% endblock recommend %}
+
+
+
+
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <title>Local Schools</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+        crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Choose a School</h1>
+    {% for school in schools %}
+    <p><a class="btn btn-primary btn-lg" href="{{school.key}}">{{school.name}}</a></p>
+    {% endfor %}
+</div>
+</body>
+</html> -->

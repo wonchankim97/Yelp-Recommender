@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" type="text/css" href= "{{url_for('static',filename='css/style.css')}}">
+
+    {% if title %}
+        <title>Yelp Recommender - {{title}}</title>
+    {% else %}
+        <title>Yelp Recommender</title>
+    {% endif %}
+</head>
+<body>
+    <div class="container">
+        <header id="main-header">
+            <div id='yelp-title'>
+                <h1>Yelp Recommender</h1>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/demo">Demo</a></li>
+                    <li><a href="https://docs.google.com/presentation/d/1ao_PuIczSbSJ0oR7cKsfzBCLhmfIxpSzqn4pfiq-DFo/edit?usp=sharing" target="_blank">Presentation</a></li>
+                </ul>
+            </div>
+        </header>
+
+        {% block recommend %}
+        {% endblock recommend %}
+
+        <section id="main">
+            {% block rank %}
+            {% endblock rank %}
+        </section>
+        
+        <div id="categories">
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud
+            </p>
+        </div>
+    
+
+        <footer id="main-footer">
+            <p>Copyright &copy; 2019 Learning Machine</p>
+        </footer>
+    </div>
+</body>
+</html>
