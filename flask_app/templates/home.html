@@ -1,7 +1,12 @@
 {% extends 'layout.html'%}
 {% block rank %}
     {{super()}}
-    <p>
-        This project was designed to recommend restaurants for any given user in the dataset which contained over ...
-    </p>
+
+    {% if head %}
+        <p>head</p>
+    {% else %}
+        <p>
+            This project was designed to recommend restaurants for any given user in the dataset which contained over ...
+        </p>
+    {% endif %}
 {% endblock rank %}

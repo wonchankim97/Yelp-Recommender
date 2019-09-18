@@ -6,13 +6,13 @@ import numpy as np
 from ast import literal_eval
 
 import os
-import plaidml.keras
-plaidml.keras.install_backend()
+# import plaidml.keras
+# plaidml.keras.install_backend()
 os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
-import xlearn as xl
-import tensorflow.keras as keras
-from tensorflow.keras.models import load_model
+# import xlearn as xl
+# import tensorflow.keras as keras
+# from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
 
 ### Load ##################
@@ -24,11 +24,11 @@ class ReviewData():
         self.load_data()
     
     def load_data(self):
-        df = pd.read_csv('review.csv',index_col='Unnamed: 0', converters={'categories': literal_eval})
+        df = pd.read_csv('module/review.csv',index_col='Unnamed: 0', converters={'categories': literal_eval})
         self.review_df = df
-        df = pd.read_csv('restaurant.csv',index_col='Unnamed: 0')
+        df = pd.read_csv('module/restaurant.csv',index_col='Unnamed: 0')
         self.restaurant_df = df
-        df = pd.read_csv('restaurant_whole.csv',index_col='Unnamed: 0')
+        df = pd.read_csv('module/restaurant_whole.csv',index_col='Unnamed: 0')
         self.restaurant_whole_df = df
 
 ### PredictXLearn ##################

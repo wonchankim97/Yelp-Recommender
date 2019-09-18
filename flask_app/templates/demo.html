@@ -1,14 +1,5 @@
 {% extends 'layout.html'%}
-{% block rank %}
-    {{super()}}
-    <h1>Restaurant Rankings</h1>
-    <p>
-        Get yo fried chicken here
-    </p>
-{% endblock rank %}
-
 {% block recommend %}
-    {{super()}}
     <div id="wrapper">
             <section id="map">
                 <h1>The map will go here</h1>
@@ -17,22 +8,32 @@
                 <p>
                     
                 </p>
-                <select id="formControlSelect1">
-                    <option>Felicia (User ID: 2lsflkj23)</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                </select>
-                
-                <a href="/demo/predict" class="button" type="button">
-                    Get Recommendations
-                </a>
-                <!-- <button type="button" class="button" href="/predicth">
-                    Get Recommendations
-                </button> -->
+                <form action='/demo/predict' method='post'>
+                    <select id="choice" name='choice'>
+                        <option name="Felicia">Felicia (User ID: 2lsflkj23)</option>
+                        <option name="Matilda">Matilda (User ID: sadfjk223)</option>
+                        <option>Example one</option>
+                        <option>Example one</option>
+                        <option>Example one</option>
+                        <option>Example one</option>
+                        <option>Example one</option>
+                    </select>
+                    <!-- <input type='hidden' name='test1' value='1'/>
+                    <input type='hidden' name='test2' value='2'/>
+                    <input type='text' name='test3' id='test3' value='3'/>
+                    <input type='text' name='test4' id='test4' value='4'/> -->
+                    
+                    <button href="/demo/predict" type='submit' id='id_submit'>
+                        Get Recommendations
+                    </button>
+                    <!-- <br/><br/> -->
+                    <!-- <a href="/demo/predict" class="button" type="button" onclick="document.getElementsByTagName('form').submit()">
+                        Get Recommendations
+                    </a> -->
+                    <!-- <button type="button" class="button" href="/predicth">
+                        Get Recommendations
+                    </button> -->
+                </form>
             </aside>
         </div>
 {% endblock recommend %}
