@@ -1,61 +1,36 @@
 {% extends 'layout.html'%}
-{% block rank %}
-    {{super()}}
-    <h1>Restaurant Rankings</h1>
-    <p>
-        Get yo fried chicken here
-    </p>
-{% endblock rank %}
-
 {% block recommend %}
-    {{super()}}
     <div id="wrapper">
-            <section id="map">
+            <!-- <section id="map">
                 <h1>The map will go here</h1>
-            </section>
+            </section> -->
+            <br/>
             <aside id="sidebar">
-                <p>
+                <form action='/demo/predict' method='post'>
+                    <select id="choice" name='choice'>
+                        <option name="Felicia">16135</option>
+                        <option name="Matilda">17440</option>
+                        <option>6281</option>
+                        <option>18189</option>
+                        <option>5806</option>
+                    </select>
+                    <!-- <input type='hidden' name='test1' value='1'/>
+                    <input type='hidden' name='test2' value='2'/>
+                    <input type='text' name='test3' id='test3' value='3'/>
+                    <input type='text' name='test4' id='test4' value='4'/> -->
                     
-                </p>
-                <select id="formControlSelect1">
-                    <option>Felicia (User ID: 2lsflkj23)</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                    <option>Example one</option>
-                </select>
-                
-                <a href="/demo/predict" class="button" type="button">
-                    Get Recommendations
-                </a>
-                <!-- <button type="button" class="button" href="/predicth">
-                    Get Recommendations
-                </button> -->
+                    <button href="/demo/predict" type='submit' id='id_submit'>
+                        Get Recommendations
+                    </button>
+                    <!-- <br/><br/> -->
+                    <!-- <a href="/demo/predict" class="button" type="button" onclick="document.getElementsByTagName('form').submit()">
+                        Get Recommendations
+                    </a> -->
+                    <!-- <button type="button" class="button" href="/predicth">
+                        Get Recommendations
+                    </button> -->
+                </form>
             </aside>
         </div>
+        <br/>
 {% endblock recommend %}
-
-
-
-
-<!-- <!DOCTYPE html>
-<html>
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta charset="UTF-8">
-    <title>Local Schools</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-        integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
-        crossorigin="anonymous">
-</head>
-<body>
-<div class="container">
-    <h1>Choose a School</h1>
-    {% for school in schools %}
-    <p><a class="btn btn-primary btn-lg" href="{{school.key}}">{{school.name}}</a></p>
-    {% endfor %}
-</div>
-</body>
-</html> -->

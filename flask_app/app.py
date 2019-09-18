@@ -1,10 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 # from model_api import make_prediction
-# from module.model import *
+from module.model import *
 
 app = Flask(__name__)
 # load data
-# rv = ReviewData()
+rv = ReviewData()
 
 # # xlearn
 # xl = PredictXLearn(rv)
@@ -16,7 +16,6 @@ app = Flask(__name__)
 
 # # ensembled
 # es = Ensemble(rv)
-# es_predict = es.predict()
 
 ##############################
 
@@ -26,16 +25,21 @@ def running():
 
 
 @app.route('/demo', methods=['GET','POST'])
-# def demo(req, res)# put in the request. ):
-#     req.body.user_id
 def demo():
     return render_template('demo.html', title='Demo')
 
 @app.route('/demo/predict', methods=['GET','POST'])
-# def demo(req, res)# put in the request. ):
-#     req.body.user_id
 def predict():
-    return render_template('predict.html', title='Predict')
+    # test
+    # x = rv.review_df.head()
+    # print(x)
+
+    x = request.form['choice']
+    rvs = rv.review_df
+    print(rvs[rvs['user_id']==int(x)])
+
+    # es_predict = es.predict(request.args['input'])
+    return render_template('predict.html', title='Predict', choice = x) #, id_input=es_predict)
 
 # @app.route('/predict',methods=['POST'])
 # def predict():

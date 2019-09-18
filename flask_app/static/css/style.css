@@ -2,7 +2,7 @@ body{
     background-color:rgb(252, 146, 113);
     color: #555555;
     font-family: Arial, Helvetica, sans-serif;
-    font-size:16px;
+    font-size:20px;
     line-height:1.6em;
     margin:0;
 }
@@ -13,14 +13,22 @@ body{
     overflow:hidden;
 }
 
-#formControlSelect1 {
+/* selection input */
+#choice {
     min-height: 30px;
 }
 
-a.button {
-    -webkit-appearance: button;
+select{
+    font-size: inherit;
+    font: inherit;
+    height:40px;
+    width:500px;
+}
+
+#id_submit {
+    /* -webkit-appearance: button;
     -moz-appearance: button;
-    appearance: button;
+    appearance: button; */
 
 	background-color:rgb(112, 106, 106);
 	color:#fff;
@@ -31,19 +39,11 @@ a.button {
     text-decoration: none;
 }
 
-/* .button{
-	background-color:rgb(112, 106, 106);
-	color:#fff;
-	padding:10px 15px;
-    border:0.5px rgb(112, 106, 106) solid;
-    border-radius:15px;
-    font: inherit;
-} */
-
-a.button:hover{
+#id_submit:hover{
 	background:rgb(214, 197, 99);
 	color:#333;
 }
+
 
 #main-header{
 	background-color:rgb(252, 146, 113);
@@ -81,13 +81,6 @@ a.button:hover{
 	padding-right:15px;
 }
 
-/* #map, #sidebar {
-    display:inline-block;
-    vertical-align: top;
-    border: 1px dotted blue;
-    word-wrap: break-word;
-  } */
-
 #map{
     display:inline-block;
     vertical-align: top;
@@ -118,23 +111,16 @@ a.button:hover{
     text-align: center;
 }
 
-select{
-    font-size: inherit;
-    font: inherit;
-    height:40px;
-    width:500px;
-}
-
 #main{
 	float:left;
-	width:70%;
+	width:60%;
 	padding:0 30px;
 	box-sizing: border-box;
 }
 
-#categories{
+#information{
     float:right;
-    width: 30%;
+    width: 40%;
 	color:#fff;
 	padding:10px;
 	box-sizing: border-box;
@@ -154,6 +140,18 @@ select{
     width: 100%;
     text-align: center;
 }
+
+/* inside predict.html */
+#display{
+    line-height: 5px;
+}
+
+.info{
+    line-height: 7px;
+}
+
+
+
 /* 
 @media(max-width:600px){
 	#main{
