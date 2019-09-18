@@ -2,7 +2,7 @@ body{
     background-color:rgb(252, 146, 113);
     color: #555555;
     font-family: Arial, Helvetica, sans-serif;
-    font-size:16px;
+    font-size:18px;
     line-height:1.6em;
     margin:0;
 }
@@ -13,8 +13,16 @@ body{
     overflow:hidden;
 }
 
+/* selection input */
 #choice {
     min-height: 30px;
+}
+
+select{
+    font-size: inherit;
+    font: inherit;
+    height:40px;
+    width:500px;
 }
 
 #id_submit {
@@ -35,6 +43,7 @@ body{
 	background:rgb(214, 197, 99);
 	color:#333;
 }
+
 
 #main-header{
 	background-color:rgb(252, 146, 113);
@@ -102,23 +111,16 @@ body{
     text-align: center;
 }
 
-select{
-    font-size: inherit;
-    font: inherit;
-    height:40px;
-    width:500px;
-}
-
 #main{
 	float:left;
-	width:70%;
+	width:60%;
 	padding:0 30px;
 	box-sizing: border-box;
 }
 
 #information{
     float:right;
-    width: 30%;
+    width: 40%;
 	color:#fff;
 	padding:10px;
 	box-sizing: border-box;
@@ -138,6 +140,18 @@ select{
     width: 100%;
     text-align: center;
 }
+
+/* inside predict.html */
+#display{
+    line-height: 5px;
+}
+
+.info{
+    line-height: 7px;
+}
+
+
+
 /* 
 @media(max-width:600px){
 	#main{

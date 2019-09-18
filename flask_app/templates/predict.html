@@ -3,15 +3,15 @@
 
 {% block rank %}
     <h1>Restaurant Rankings</h1>
-    <p>
-        {{choice}}
-    </p>
+    {% for i in range(10) %}
+        <p id='display'> {{i+1}}. {{ choice }} </p>
+    {% endfor %}
 {% endblock rank %}
 
 {% block info %}
-<h2>Name: {{first_name}} {{last_name}}</h2>
-<h2>Businesses Reviewed: {{review_count}}</h2>
-<h2>Average Stars: {{avg_star}}</h2>
-<h2>Number of Fans: {{fans}}</h2>
+<h3 class='info'>Name: {{first_name}} {{last_name}}</h3>
+<h3 class='info'>Businesses Reviewed: {{review_count}}</h3>
+<h3 class='info'>Average Stars: {{avg_star}}</h3>
+<h3 class='info'>Number of Fans: {{fans}}</h3>
 {% endblock info %}
 
