@@ -5,15 +5,17 @@ from pandas.io.json import json_normalize
 import numpy as np
 from ast import literal_eval
 
-import os
-import plaidml.keras
-plaidml.keras.install_backend()
-os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
+# import os
+# import plaidml.keras
+# plaidml.keras.install_backend()
+# os.environ["KERAS_BACKEND"] = "plaidml.keras.backend"
 
 import xlearn as xl
 import tensorflow.keras as keras
 from tensorflow.keras.models import load_model
 from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler
+
+from surprise import dump
 
 ### Load ##################
 class ReviewData():
@@ -21,15 +23,18 @@ class ReviewData():
         self.review_df = pd.DataFrame()
         self.restaurant_df = pd.DataFrame()
         self.restaurant_whole_df = pd.DataFrame()
+        self.user_df = pd.DataFrame()
         self.load_data()
     
     def load_data(self):
-        df = pd.read_csv('module/review.csv',index_col='Unnamed: 0', converters={'categories': literal_eval})
+        df = pd.read_csv('review.csv',index_col='Unnamed: 0', converters={'categories': literal_eval})
         self.review_df = df
-        df = pd.read_csv('module/restaurant.csv',index_col='Unnamed: 0')
+        df = pd.read_csv('restaurant.csv',index_col='Unnamed: 0')
         self.restaurant_df = df
-        df = pd.read_csv('module/restaurant_whole.csv',index_col='Unnamed: 0')
+        df = pd.read_csv('restaurant_whole.csv',index_col='Unnamed: 0')
         self.restaurant_whole_df = df
+        df = pd.read_csv('user.csv',index_col='Unnamed: 0')
+        self.user_df = df
 
 ### PredictXLearn ##################
 class PredictXLearn():
@@ -151,34 +156,68 @@ class PredictDeepFM():
         return result
     
     def simple_predict(self):
-        result = pd.DataFrame(self._deep_fm_model.predict(self._predict_df), columns=['deepfm_stars'])
+        _deep_fm_model = load_model('final_model/deepFM_v0.1.h5')
+        result = pd.DataFrame(_deep_fm_model.predict(self._predict_df), columns=['deepfm_stars'])
         result = pd.concat([self._xrestaurants['business_id'],result], axis=1)
         return result
 
+### Surprise SVD
+class PredictSurpriseSVD():
+    def __init__(self, _data_object):
+        self._user_id = ''
+        self._xrestaurants_whole = _data_object.restaurant_whole_df
+        self._predict_df = pd.DataFrame()
+        _, self._surprise_svd_model = dump.load('final_model/surpriseSVD_v0.1')
+        
+    def build_predict_df(self, _user_id):
+        predict_df = self._xrestaurants_whole[['business_id']]
+        predict_df['user_id']= _user_id
+        self._predict_df = predict_df
+        
+    def predict(self, num=10):
+        for index, row in self._predict_df.iterrows():
+            prediction = self._surprise_svd_model.predict(uid=row["user_id"],iid=row["business_id"])
+            self._predict_df.at[index, 'final_stars'] = prediction.est    
+        
+        result = pd.concat([self._xrestaurants_whole, self._predict_df], axis=1).sort_values('final_stars', ascending=False)[:num]
+        return result
+    
+    def simple_predict(self):
+        for index, row in self._predict_df.iterrows():
+            prediction = self._surprise_svd_model.predict(uid=row["user_id"],iid=row["business_id"])
+            self._predict_df.at[index, 'svd_stars'] = prediction.est    
+        
+        result = self._predict_df[['business_id','svd_stars']]
+        return result
 
 ### Ensemble ##################
-class Ensemble():
+class Ensemble():    
     def __init__(self, _data_obj):
         self._data_object = _data_obj
         self._xlearn = PredictXLearn(self._data_object)
         self._deepfm = PredictDeepFM(self._data_object)
+        self._surpriseSvd = PredictSurpriseSVD(self._data_object)
         
     def predict(self, _user_id, _num = 10):
         self._xlearn.build_libffm(_user_id)
         self._deepfm.build_df2xy(_user_id)        
+        self._surpriseSvd.build_predict_df(_user_id)
         
         xlearn = self._xlearn.simple_predict()
         deepfm = self._deepfm.simple_predict()
-                                 
+        surpriseSvd = self._surpriseSvd.simple_predict()
+            
         result = self._data_object.restaurant_whole_df
-        result = result.merge(xlearn, on='business_id', how='left').merge(deepfm, on='business_id', how='left')
+        result = result.merge(xlearn, on='business_id', how='left').merge(deepfm, on='business_id', how='left').merge(surpriseSvd, on='business_id', how='left')
         
         scaler = MinMaxScaler(feature_range=(1,10))
         result['deepfm_stars'] = scaler.fit_transform(result[['deepfm_stars']])
         result['xlearn_stars'] = scaler.fit_transform(result[['xlearn_stars']])
-        #result['svd_stars'] = scaler.fit_transform(result[['svd_stars']])
-        result['final_stars'] = result['deepfm_stars']*0.5 + result['xlearn_stars']*0.5
-        #result['final_stars'] = result.apply(lambda x : result['svd_stars'] if x['user_id'] not in self._data_object.review_df['user_id'].values else result['deepfm_stars']*0.4 + result['xlearn_stars']*0.3 + result['svd_stars']*0.3)
+        result['svd_stars'] = scaler.fit_transform(result[['svd_stars']])
+        is_in = (_user_id in self._data_object.review_df['uid'].values)
+        result['final_stars'] = result.apply(lambda x : x['svd_stars']*0.9 if (not is_in) or (np.isnan(x['deepfm_stars'])) or (np.isnan(x['xlearn_stars'])) else x['deepfm_stars']*0.4 + x['xlearn_stars']*0.3 + x['svd_stars']*0.3, axis=1)
         result = result.sort_values('final_stars', ascending = False)[:_num]
+        
+        #result = result.sort_values('final_stars', ascending = False)
         
         return result        

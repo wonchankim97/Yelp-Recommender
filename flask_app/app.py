@@ -5,6 +5,7 @@ from module.model import *
 app = Flask(__name__)
 # load data
 rv = ReviewData()
+es = Ensemble(rv)
 
 # # xlearn
 # xl = PredictXLearn(rv)
@@ -35,11 +36,14 @@ def predict():
     # print(x)
 
     x = request.form['choice']
-    rvs = rv.review_df
-    print(rvs[rvs['user_id']==int(x)])
+    #rvs = rv.review_df
+    #print(rvs[rvs['user_id']==int(x)])
+    
+    es_predict = es.predict(x)
+    es_predict_list = es_predict.iloc[:10].apply(lambda x : x.to_dict(), axis=1)
 
-    # es_predict = es.predict(request.args['input'])
-    return render_template('predict.html', title='Predict', choice = x) #, id_input=es_predict)
+    user = es._data_object.user_df[es._data_object.user_df['user_id']==x].iloc[0].to_dict()
+    return render_template('predict.html', title='Predict', ranking = es_predict_list, user = user) #, id_input=es_predict)
 
 # @app.route('/predict',methods=['POST'])
 # def predict():
@@ -67,7 +71,7 @@ def predict():
 
 
 if __name__ == '__main__':
-    app.run(debug = True)
+    app.run(debug = True, host='0.0.0.0')
     
 # '''
 # A Web application that shows Google Maps around schools, using
