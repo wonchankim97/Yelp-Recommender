@@ -122,13 +122,21 @@ select{
 #main{
 	float:bottom;
 	width:100%;
-	padding:0 30px;
+	padding:0 20px 100px 20px;
 	box-sizing: border-box;
 }
 
 #main table{
     border-color: #555555;
     border: 1px;
+}
+
+#main img{
+    width:100%;
+}
+
+#main h3{
+    text-align: center;
 }
 
 
