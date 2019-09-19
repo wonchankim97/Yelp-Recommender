@@ -116,6 +116,19 @@ class PredictXLearn():
 
         return result
 
+    def simple_predict2(self):
+        fm_model = xl.create_fm()
+        # Prediction task
+        predict_path = 'xlearn_dataset/predict_'+self._user_id+'.txt'
+        fm_model.setTest(predict_path)  # Set the path of test dataset
+        # Start to predict
+        # The output result will be stored in output.txt
+        fm_model.predict('final_model/xLearn_v0.3.out', 'xlearn_dataset/output_'+self._user_id+'.txt')
+        result = pd.read_csv('xlearn_dataset/output_'+self._user_id+'.txt', header=None, names=['xlearn_stars'])        
+        result = pd.concat([self._xrestaurants['business_id'],result], axis=1)
+
+        return result    
+
 
 ### DeepFM ##################
 class PredictDeepFM():
@@ -215,7 +228,31 @@ class Ensemble():
         result['xlearn_stars'] = scaler.fit_transform(result[['xlearn_stars']])
         result['svd_stars'] = scaler.fit_transform(result[['svd_stars']])
         is_in = (_user_id in self._data_object.review_df['uid'].values)
-        result['final_stars'] = result.apply(lambda x : x['svd_stars']*0.9 if (not is_in) or (np.isnan(x['deepfm_stars'])) or (np.isnan(x['xlearn_stars'])) else x['deepfm_stars']*0.4 + x['xlearn_stars']*0.3 + x['svd_stars']*0.3, axis=1)
+        result['final_stars'] = result.apply(lambda x : x['svd_stars']*0.9 if (not is_in) or (np.isnan(x['deepfm_stars'])) or (np.isnan(x['xlearn_stars'])) else x['deepfm_stars']*0.4 + x['xlearn_stars']*0.4 + x['svd_stars']*0.2, axis=1)
+        result = result.sort_values('final_stars', ascending = False)[:_num]
+        
+        #result = result.sort_values('final_stars', ascending = False)
+        
+        return result    
+
+    def predict2(self, _user_id, _num = 10):
+        self._xlearn.build_libffm(_user_id)
+        self._deepfm.build_df2xy(_user_id)        
+        self._surpriseSvd.build_predict_df(_user_id)
+        
+        xlearn = self._xlearn.simple_predict2()
+        deepfm = self._deepfm.simple_predict()
+        surpriseSvd = self._surpriseSvd.simple_predict()
+            
+        result = self._data_object.restaurant_whole_df
+        result = result.merge(xlearn, on='business_id', how='left').merge(deepfm, on='business_id', how='left').merge(surpriseSvd, on='business_id', how='left')
+        
+        scaler = MinMaxScaler(feature_range=(1,10))
+        result['deepfm_stars'] = scaler.fit_transform(result[['deepfm_stars']])
+        result['xlearn_stars'] = scaler.fit_transform(result[['xlearn_stars']])
+        result['svd_stars'] = scaler.fit_transform(result[['svd_stars']])
+        is_in = (_user_id in self._data_object.review_df['uid'].values)
+        result['final_stars'] = result.apply(lambda x : x['svd_stars']*0.9 if (not is_in) or (np.isnan(x['deepfm_stars'])) or (np.isnan(x['xlearn_stars'])) else x['deepfm_stars']*0 + x['xlearn_stars']*1 + x['svd_stars']*0, axis=1)
         result = result.sort_values('final_stars', ascending = False)[:_num]
         
         #result = result.sort_values('final_stars', ascending = False)
