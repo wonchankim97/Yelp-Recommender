@@ -1,17 +1,38 @@
 {% extends 'demo.html'%}
 
+{% block info %}
+<h3 class='info'>Name: {{user.name}} </h3>
+<h3 class='info'>Businesses Reviewed: {{user.review_count}}</h3>
+<h3 class='info'>Average Stars: {{user.average_stars}}</h3>
+<h3 class='info'>Number of Fans: {{user.fans}}</h3>
+{% endblock info %}
 
 {% block rank %}
     <h1>Restaurant Rankings</h1>
-    {% for i in range(10) %}
-        <p id='display'> {{i+1}}. {{ choice }} </p>
+    <table class='myTable headerH'>
+        <tr>
+            <th>Ranking</th>
+            <th>Name</th>
+            <th>Stars</th>
+            <th>Category</th>
+            <th>xLearn</th>
+            <th>deepFM</th>
+            <th>SVD</th>
+            <th>Final</th>
+        </tr>
+    {% for v in ranking %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{v.name}}</td>
+            <td>{{v.stars}}</td>
+            <td>{{v.categories}}</td>
+            <td>{{v.xlearn_stars|round(2)}}</td>
+            <td>{{v.deepfm_stars|round(2)}}</td>
+            <td>{{v.svd_stars|round(2)}}</td>
+            <td>{{v.final_stars|round(2)}}</td>
+        </tr>
     {% endfor %}
+    </table>
 {% endblock rank %}
 
-{% block info %}
-<h3 class='info'>Name: {{first_name}} {{last_name}}</h3>
-<h3 class='info'>Businesses Reviewed: {{review_count}}</h3>
-<h3 class='info'>Average Stars: {{avg_star}}</h3>
-<h3 class='info'>Number of Fans: {{fans}}</h3>
-{% endblock info %}
 
